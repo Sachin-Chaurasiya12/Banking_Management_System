@@ -1,4 +1,6 @@
 .vscode/
-resources/db.properties
-resources/application.properties
-!resources/*Example.properties
+# Ignore all properties
+*.properties
+
+# Allow example files
+!*Example.properties
