@@ -22,6 +22,7 @@ import java.util.Stack;
 
 import com.example.Exception.InterfaceException;
 import com.example.interfaceModel.modelUI;
+import com.example.interfaceModel.LoginModel.loginstrutImpl;
 import com.example.utils.loadingAnimation;
 import com.example.utils.printInsider;
 import com.example.utils.programTermination;
@@ -35,17 +36,26 @@ public class Main {
     static InterfaceException ex = new InterfaceException();
     static Stack<Runnable> menustack = new Stack<>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         //Contains the heading of the Banking System.
         console.version();
         //Call the Main function.
+        loginstrutImpl log = new loginstrutImpl();
         menustack.push(() -> {
             try {
-                MainMenu();
+                log.Login();
             } catch (Exception e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        });
+                menustack.push(() -> {
+                    try {
+                        MainMenu();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            });
         runMenuLoop();
     }
     public static void MainMenu() throws Exception{
@@ -69,7 +79,6 @@ public class Main {
                 break;
             case 7:
             try {
-                Thread.sleep(1000);
                 //Contain loading + termination 
                 l.loading();
                 menustack.clear();
@@ -101,7 +110,7 @@ public class Main {
     }
     static void runMenuLoop(){
         while(!menustack.isEmpty()){
-            Runnable CurrentOperation = menustack.peek();
+            Runnable CurrentOperation = menustack.pop();
             CurrentOperation.run();
         }
     }

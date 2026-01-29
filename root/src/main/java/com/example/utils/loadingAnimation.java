@@ -19,6 +19,7 @@ package com.example.utils;
 
 public class loadingAnimation {
     public void loading() throws InterruptedException {
+        Thread.sleep(1000);
         char[] spinner = {'|', '/', '-', '\\'};
 
         System.out.print("Exiting ");
@@ -27,5 +28,19 @@ public class loadingAnimation {
             System.out.print("\rExiting " + spinner[i % spinner.length]);
             Thread.sleep(200);
         }
+        System.out.println();
+    }
+    
+    public void initconnection() throws InterruptedException{
+        Thread.sleep(1000);
+         char[] spinner = {'|', '/', '-', '\\'};
+
+        System.out.print("Initializing Connection ");
+
+        for (int i = 0; i < 20; i++) {
+            System.out.print("\rConnecting " + spinner[i % spinner.length]);
+            Thread.sleep(200);
+        }
+        System.out.println();
     }
 }

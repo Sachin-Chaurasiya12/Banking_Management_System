@@ -1,1 +1,4 @@
 .vscode/
+resources/db.properties
+resources/application.properties
+!resources/*Example.properties

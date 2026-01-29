@@ -23,6 +23,7 @@ public class Account {
     private double amount;
     private String phoneno;
 
+    public Account(){}
     public Account(int Accountnumber,String name,double amount, String phoneno){
         this.Accountnumber = Accountnumber;
         this.name = name;
