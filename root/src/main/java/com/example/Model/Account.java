@@ -18,19 +18,19 @@
 package com.example.Model;
 
 public class Account {
-    private int Accountnumber;
+    private String Accountnumber;
     private String name;
     private double amount;
     private String phoneno;
 
     public Account(){}
-    public Account(int Accountnumber,String name,double amount, String phoneno){
+    public Account(String Accountnumber,String name,double amount, String phoneno){
         this.Accountnumber = Accountnumber;
         this.name = name;
         this.amount = amount;
         this.phoneno = phoneno;
     }
-    public int getAccountnumber() {
+    public String getAccountnumber() {
         return Accountnumber;
     }
     public String getName() {
@@ -42,7 +42,7 @@ public class Account {
     public String getPhoneno() {
         return phoneno;
     }
-    public void setAccountnumber(int accountnumber) {
+    public void setAccountnumber(String accountnumber) {
         Accountnumber = accountnumber;
     }
     public void setAmount(double amount) {

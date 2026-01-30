@@ -43,4 +43,17 @@ public class loadingAnimation {
         }
         System.out.println();
     }
+
+    public void AccountCreation() throws InterruptedException{
+        Thread.sleep(1000);
+         char[] spinner = {'|', '/', '-', '\\'};
+
+        System.out.print("Creating Account");
+
+        for (int i = 0; i < 20; i++) {
+            System.out.print("\rCreating Account " + spinner[i % spinner.length]);
+            Thread.sleep(200);
+        }
+        System.out.println();
+    }
 }

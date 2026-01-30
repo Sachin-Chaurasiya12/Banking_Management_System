@@ -17,6 +17,7 @@
 */
 package com.example.interfaceModel;
 
+import com.example.interfaceModel.LoginModel.loginstrutImpl;
 import com.example.utils.printInsider;
 
 public class modelUI {
@@ -28,6 +29,7 @@ public class modelUI {
         in.println("+-----------------------------------------------------------------+");
     }
     public void interfaceModel(){
+        in.println(CurrentUser());
         in.println("+--------------------------------+--------------------------------+");
         in.print("1) Account");
         in.print("        2) Check Balance");
@@ -45,4 +47,8 @@ public class modelUI {
         in.println("0) <-- Back");
         in.println("+---------------------------+");
     }
+    public static String CurrentUser(){
+        String CurrentUser = loginstrutImpl.getloggedinusername();
+        return "logged in User : " + CurrentUser;
+    } 
 }

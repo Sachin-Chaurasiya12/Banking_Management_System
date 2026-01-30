@@ -21,7 +21,7 @@ import java.util.Scanner;
 
 import com.example.Model.login;
 import com.example.Security.hidingPassword;
-import com.example.SysDatabase.LoginDataImpl;
+import com.example.SysDatabaseAndCaching.LoginDataImpl;
 import com.example.utils.printInsider;
 import com.example.utils.programTermination;
 
@@ -31,6 +31,7 @@ public class loginstrutImpl {
     static final Scanner sc = new Scanner(System.in);
     static final programTermination t = new programTermination();
     static final hidingPassword hide = new hidingPassword();
+    private static String loggedinusername = null;
 
     public void Login() throws Exception {
         LoginDataImpl.initConnection();
@@ -55,10 +56,19 @@ public class loginstrutImpl {
 
             switch (input) {
                 case 1:
+                    int attempt = 0;
                     // Loop until login is successful
-                    while (!loginuser()) {
+                    while (attempt < 3) {
+                        if(loginuser()){
+                            return;
+                        }
                         // retry until success
+                        attempt++;
+                        in.println("Attempt : " + attempt);
                     }
+                    in.println("Attempts reached it's maximum limit!");
+                    Thread.sleep(800);
+                    Back();
                     return; // exit after successful login
 
                 case 2:
@@ -77,7 +87,7 @@ public class loginstrutImpl {
             }
         }
     }
-
+    //function which help to login the user.
     public boolean loginuser() throws Exception {
         in.print("Enter Username: ");
         String username = sc.nextLine();
@@ -87,6 +97,7 @@ public class loginstrutImpl {
         boolean success = dao.validateUser(username, password);
 
         if (success) {
+            loggedinusername = username;
             in.println("Login Successful!\n");
             return true;
         } else {
@@ -94,10 +105,10 @@ public class loginstrutImpl {
             return false; // retry will happen in the Login() loop
         }
     }
-
+    //function to add a new user.
     public void newUser() throws Exception {
         LoginDataImpl dao = new LoginDataImpl();
-        String name;
+        String name; 
 
         // Loop until username is available
         while (true) {
@@ -129,8 +140,11 @@ public class loginstrutImpl {
 
         in.println("User Registered Successfully!");
     }
-
+    //Close the whole program and quit before login.
     public void Back() {
         t.exitAndClose();
+    }
+    public static String getloggedinusername(){
+        return loggedinusername;
     }
 }
