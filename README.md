@@ -26,7 +26,7 @@ This project is designed for learning **core Java concepts**, **OOP**, and **bas
   - Encapsulation
   - Polymorphism
 - **Exception Handling**
-- **Collections (if used)**
+- **Collections**
 
 ---
 
@@ -42,7 +42,7 @@ Banking_Management_System/
 │   │   ├── Bank.java
 │   │   └── Main.java
 │
-├── lib/               # External libraries (if any)
+├── lib/               
 ├── .gitignore
-├── pom.xml            # (If Maven is used)
+├── pom.xml           
 └── README.md
