@@ -49,6 +49,7 @@ Banking_Management_System/
 
 ```
 This is the output based on Role :
+<br>
 #User
 <img width="747" height="353" alt="image" src="https://github.com/user-attachments/assets/58c1dec3-4176-4e93-8958-d93016848f8c" />
 <br>
