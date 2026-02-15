@@ -17,10 +17,15 @@
 */
 package com.example.interfaceModel.LoginModel;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.Scanner;
 
+import com.example.Exception.InterfaceException;
 import com.example.Model.login;
 import com.example.Security.hidingPassword;
+import com.example.Security.passwordHashing;
 import com.example.SysDatabaseAndCaching.LoginDataImpl;
 import com.example.utils.printInsider;
 import com.example.utils.programTermination;
@@ -32,6 +37,9 @@ public class loginstrutImpl {
     static final programTermination t = new programTermination();
     static final hidingPassword hide = new hidingPassword();
     private static String loggedinusername = null;
+    private static String rolelabel = null;
+    static final String filename = "application.properties";
+    static final InterfaceException ex = new InterfaceException();
 
     public void Login() throws Exception {
         LoginDataImpl.initConnection();
@@ -92,12 +100,12 @@ public class loginstrutImpl {
         in.print("Enter Username: ");
         String username = sc.nextLine();
         String password = hide.passwordhide();
-
         LoginDataImpl dao = new LoginDataImpl();
-        boolean success = dao.validateUser(username, password);
+        login user = dao.validateUser(username, password);
 
-        if (success) {
+        if (user != null) {
             loggedinusername = username;
+            rolelabel = user.getRole();
             in.println("Login Successful!\n");
             return true;
         } else {
@@ -109,6 +117,8 @@ public class loginstrutImpl {
     public void newUser() throws Exception {
         LoginDataImpl dao = new LoginDataImpl();
         String name; 
+        String adcode = "";
+        String role = "USER";
 
         // Loop until username is available
         while (true) {
@@ -121,21 +131,48 @@ public class loginstrutImpl {
             in.println("Username already exists! Try another.");
         }
 
-        String password, conpass;
+        String input, conpass,option;
+        System.out.println("Are you a User or Admin?(y/n) : ");
+        option = sc.nextLine();
+        if(option.equalsIgnoreCase("y")){
+            adcode = hide.passwordhideadmincode();
 
+            Properties prop = new Properties();
+            InputStream file = getClass()
+            .getClassLoader()
+            .getResourceAsStream(filename);
+            if (file == null) {
+            throw new RuntimeException("application.properties file not found");
+            }
+            try {
+                prop.load(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String orgcode = prop.getProperty("log.admincode");
+                if(orgcode != null && orgcode.equals(adcode)){
+                    role = "ADMIN";
+                    in.println("Admin privileges granted.");
+                } else {
+                    in.println("Invalid Admin Code. Registering as normal USER.");
+            }
+        }else if(option.equalsIgnoreCase("n")){
+        }else{
+            ex.InvalidInput();
+        }
         // Loop until passwords match
         while (true) {
-            password = hide.passwordhide();
+            input = hide.passwordhide();
             conpass = hide.passwordhiderenter();
 
-            if (!password.equals(conpass)) {
+            if (!input.equalsIgnoreCase(conpass)) {
                 in.println("Passwords do not match! Try again.");
             } else {
                 break;
             }
         }
-
-        login user = new login(name, password);
+        String password = passwordHashing.hashPassword(input);
+        login user = new login(name, password,role);
         dao.saveUser(user);
 
         in.println("User Registered Successfully!");
@@ -146,5 +183,8 @@ public class loginstrutImpl {
     }
     public static String getloggedinusername(){
         return loggedinusername;
+    }
+    public static String getUserRole(){
+        return rolelabel;
     }
 }

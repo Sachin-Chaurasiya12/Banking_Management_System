@@ -20,11 +20,13 @@ package com.example.Model;
 public class login {
     private String Name;
     private String password;
+    private String role;
 
     public login() {}
-    public login(String Name,String password){
+    public login(String Name,String password,String role){
         this.Name = Name;
         this.password = password;
+        this.role = role;
     }
 
     public String getName() {
@@ -33,10 +35,16 @@ public class login {
     public String getPassword() {
         return password;
     }
+    public String getRole() {
+        return role;
+    }
     public void setName(String name) {
         Name = name;
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public void setRole(String role) {
+        this.role = role;
     }
 }

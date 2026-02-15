@@ -45,4 +45,16 @@ public class hidingPassword {
             }
         }
     }
+    public String passwordhideadmincode(){
+        Console console = System.console();
+        if (console != null) {
+            char[] pwd = console.readPassword("Enter Admin code: ");
+            return new String(pwd);
+        }else {
+            System.out.print("Enter password: ");
+            try (Scanner sc = new Scanner(System.in)) {
+                return sc.nextLine();
+            }
+        }
+    }
 }

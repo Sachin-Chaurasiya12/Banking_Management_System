@@ -29,7 +29,7 @@ public class modelUI {
         in.println("+-----------------------------------------------------------------+");
     }
     public void interfaceModel(){
-        in.println(CurrentUser());
+        in.println(CurrentUser() + " (" + CurrentRole() + ")");
         in.println("+--------------------------------+--------------------------------+");
         in.print("1) Account");
         in.print("        2) Check Balance");
@@ -51,4 +51,8 @@ public class modelUI {
         String CurrentUser = loginstrutImpl.getloggedinusername();
         return "logged in User : " + CurrentUser;
     } 
+    public static String CurrentRole(){
+        String CurrentRole = loginstrutImpl.getUserRole();
+        return CurrentRole;
+    }
 }

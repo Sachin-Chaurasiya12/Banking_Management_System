@@ -19,6 +19,7 @@ package com.example.SysDatabaseAndCaching;
 
 import java.sql.*;
 import com.example.Model.login;
+import com.example.Security.passwordHashing;
 import com.zaxxer.hikari.HikariDataSource;
 
 public class LoginDataImpl {
@@ -49,7 +50,8 @@ public class LoginDataImpl {
             CREATE TABLE IF NOT EXISTS loggeduser(
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 username VARCHAR(20) UNIQUE NOT NULL,
-                password VARCHAR(255) NOT NULL
+                password VARCHAR(255) NOT NULL,
+                role VARCHAR(10) NOT NULL
             )
         """;
 
@@ -65,29 +67,35 @@ public class LoginDataImpl {
 
     // save user
     public void saveUser(login user) throws Exception {
-        String sql = "INSERT INTO loggeduser(username, password) VALUES (?, ?)";
+        String sql = "INSERT INTO loggeduser(username,password,role) VALUES (?,?,?)";
 
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, user.getName());
             ps.setString(2, user.getPassword()); // hashed password
+            ps.setString(3, user.getRole());
             ps.executeUpdate();
         }
     }
-    public boolean validateUser(String username,String password) throws Exception {
-        String sql = "select * from loggeduser where username = ? and password = ?";
+    public login validateUser(String username,String password) throws Exception {
+        String sql = "select password,role from loggeduser where username = ?";
 
         try (Connection con = getConnection();
             PreparedStatement ps = con.prepareStatement(sql)){
             ps.setString(1, username);
-            ps.setString(2, password);
 
             try(ResultSet rs = ps.executeQuery()){
-                return rs.next();
+                if(rs.next()){
+                    String storedhash = rs.getString("password");
+                    if(passwordHashing.verifyPassword(password, storedhash)){
+                        String role = rs.getString("role");
+                        return new login(username,storedhash,role);
+                    }
+                }
             }
         }
-
+        return null;
     }
     public boolean userExists(String username) throws Exception {
     String sql = "SELECT 1 FROM loggeduser WHERE username = ?";
