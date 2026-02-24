@@ -20,7 +20,7 @@ package com.example.Model;
 public class login {
     private String Name;
     private String password;
-    private String role;
+    private String role; 
 
     public login() {}
     public login(String Name,String password,String role){

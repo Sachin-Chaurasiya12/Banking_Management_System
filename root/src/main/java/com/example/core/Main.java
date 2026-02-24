@@ -4,10 +4,12 @@ import java.util.Scanner;
 import java.util.Stack;
 
 import com.example.Exception.InterfaceException;
+import com.example.Model.login;
 import com.example.Services.MainOperation;
 import com.example.Services.MainOperationImpl;
 import com.example.Services.logs;
 import com.example.Services.logsImplementation;
+import com.example.interfaceModel.UserModelUI;
 import com.example.interfaceModel.modelUI;
 import com.example.interfaceModel.LoginModel.loginstrutImpl;
 import com.example.utils.loadingAnimation;
@@ -35,13 +37,24 @@ public class Main {
         menustack.push(() -> {
             try {
                 log.Login();
+                String role = loginstrutImpl.getUserRole();
+                if("Admin".equalsIgnoreCase(role)){
                 menustack.push(() -> {
                     try {
                         MainMenu();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }); // After login, show main menu
+                });
+             }else{
+                menustack.push(() -> {
+                    try {
+                        usermainmenu();
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                });
+             } // After login, show main menu
             } catch (Exception e) {
                 in.println("Login failed: " + e.getMessage());
                 e.printStackTrace();
@@ -115,7 +128,49 @@ public class Main {
             }
         }
     }
+    public static void usermainmenu() throws Exception{
+        while (true) {
+            UserModelUI.interfaceModel();
+            int input = readInt("Enter value: ");
 
+            switch (input) {
+                case 1 -> {
+                    try {
+                        main.CheckBalance();
+                        System.out.println();
+                    } catch (Exception e) {
+                        in.println("Something went wrong! Please try again.");
+                        e.printStackTrace();
+                    }
+                }
+                case 2 -> {
+                    try {
+                        main.Withdraw();
+                        System.out.println();
+                    } catch (Exception e) {
+                        in.println("Something went wrong! Please try again.");
+                        e.printStackTrace();
+                    }
+                }
+                case 4 -> {
+                    menustack.push(Main::otherOperation);
+                    return;
+                }
+                case 5 -> {
+                    try {
+                        l.loading();
+                        menustack.clear();
+                        termination.exitAndClose();
+                        return; // exit loop
+                    } catch (Exception e) {
+                        ex.valueError();
+                        e.printStackTrace();
+                    }
+                }
+                default -> in.println("Invalid input! Please try again.\n");
+            }
+        }
+    }
     /** Other operations menu **/
     public static void otherOperation() {
         while (true) {
